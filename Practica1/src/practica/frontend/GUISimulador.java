@@ -68,7 +68,6 @@ class Evento implements ActionListener{
 	 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		panel.setMoviendose(true);
 		panel.moverADerecha();
 	}
 	

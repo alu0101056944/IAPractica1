@@ -227,6 +227,7 @@ public class GUIPanelEscenario extends JPanel{
 	public void moverADerecha() {
 		System.err.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
 		moviendose = true;
+		hiloMovimiento.setCeldaObjetivo(guiCeldasEscenario[getCeldaConCoche().getIndiceMatrizI()][getCeldaConCoche().getIndiceMatrizJ()+1]);
 		hiloMovimiento.moverADerecha();
 	}
 	
