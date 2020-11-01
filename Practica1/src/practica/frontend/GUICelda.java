@@ -111,7 +111,7 @@ public class GUICelda {
 	 * @return the indiceMatrizI
 	 */
 	public int getIndiceMatrizI() {
-		return indiceMatrizI;
+		return this.indiceMatrizI;
 	}
 
 	/**
@@ -125,7 +125,7 @@ public class GUICelda {
 	 * @return the indiceMatrizJ
 	 */
 	public int getIndiceMatrizJ() {
-		return indiceMatrizJ;
+		return this.indiceMatrizJ;
 	}
 
 	/**
