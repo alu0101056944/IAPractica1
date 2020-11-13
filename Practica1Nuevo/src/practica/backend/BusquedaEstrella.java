@@ -22,19 +22,19 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		getNodosPorExpandir().add(nodoInicial);
 		
 		NodoBusqueda metaOptima = null;
-		while(getNodosPorExpandir().size()>0 && ) {											//Y si su f es menor que el de la meta actual encontrada
+		boolean posibleMejorMeta = true;
+		while(getNodosPorExpandir().size()>0) {
 			NodoBusqueda siguienteNodo = obtenerNodoSinExpandirConMenorMerito();
-			if(siguienteNodo.esMeta()) {
-				if(siguienteNodo.mejorMetaQue(metaOptima)) {
-					metaOptima = siguienteNodo;
-					moverCoche(siguienteNodo.getAccion());	
-																						//Tengo que guardar el camino que tengo
-				}
+			if(siguienteNodo.esMeta() && siguienteNodo.mejorMetaQue(metaOptima)) {
+				metaOptima = siguienteNodo;
+				moverCoche(siguienteNodo.getAccion());	
 			}
 			
-			expandirNodo(siguienteNodo);
-			calcularMeritos(siguienteNodo);
-			//Ordenar lista segun f (0 es menor que 1)
+			if(metaOptima!=null && metaOptima.getF()>siguienteNodo.getF()) {
+				expandirNodo(siguienteNodo);
+				calcularMeritos(siguienteNodo);
+				//Ordenar lista segun f (0 es menor que 1)
+			}
 		}
 	}
 	

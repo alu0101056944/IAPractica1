@@ -55,7 +55,8 @@ public class NodoBusqueda {
 	}
 	
 	public boolean mejorMetaQue(NodoBusqueda nodoMetaAnterior) {
-		return this.getF()<nodoMetaAnterior.getF();
+		if(nodoMetaAnterior!=null) return this.getF()<nodoMetaAnterior.getF();
+		return false;
 	}
 	
 	public Iterator<NodoBusqueda> iterator(){
