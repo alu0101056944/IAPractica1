@@ -15,12 +15,12 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
-import practica.backend.Cell;
+import practica.backend.Celda;
 
 @SuppressWarnings("serial")
 public class GUIPanelMenu extends JPanel{
 
-	private Cell[][] celdasEscenario;
+	private Celda[][] celdasEscenario;
 	
 	private JButton botonAleatorizarObstaculos;
 	private JLabel etiquetaAleatorizarObstaculos;
@@ -33,7 +33,7 @@ public class GUIPanelMenu extends JPanel{
 	
 	private MouseListener monitorRaton;
 	
-	public GUIPanelMenu(Cell[][] celdasEscenario, GUIPanelEscenario escenario) {
+	public GUIPanelMenu(Celda[][] celdasEscenario, GUIPanelEscenario escenario) {
 		super();
 		this.escenario = escenario;
 		this.setCeldasEscenario(celdasEscenario);
@@ -46,15 +46,15 @@ public class GUIPanelMenu extends JPanel{
 	}
 	
 	private void parteAleatorizarObstaculos(){
-		etiquetaAleatorizarObstaculos = new JLabel("Aleatorizar obstaculos");
+		etiquetaAleatorizarObstaculos = new JLabel("Prob. Obs.");
 		add(etiquetaAleatorizarObstaculos);
 		
 		valorAleatorizacionObstaculos = new JTextField("3");
-		valorAleatorizacionObstaculos.setPreferredSize(new Dimension(100, 25));
+		valorAleatorizacionObstaculos.setPreferredSize(new Dimension(40, 25));
 		add(valorAleatorizacionObstaculos);
 		
-		botonAleatorizarObstaculos = new JButton("Aplicar");
-		ActionAleatorizarObstaculos alAleatorizar = new ActionAleatorizarObstaculos(celdasEscenario, escenario,valorAleatorizacionObstaculos);
+		botonAleatorizarObstaculos = new JButton(">");
+		ActionAleatorizarObstaculos alAleatorizar = new ActionAleatorizarObstaculos(celdasEscenario, escenario,valorAleatorizacionObstaculos, this);
 		botonAleatorizarObstaculos.addActionListener(alAleatorizar);
 		add(botonAleatorizarObstaculos);
 	}
@@ -92,14 +92,14 @@ public class GUIPanelMenu extends JPanel{
 	/**
 	 * @return the celdasEscenario
 	 */
-	public Cell[][] getCeldasEscenario() {
+	public Celda[][] getCeldasEscenario() {
 		return celdasEscenario;
 	}
 
 	/**
 	 * @param celdasEscenario the celdasEscenario to set
 	 */
-	public void setCeldasEscenario(Cell[][] celdasEscenario) {
+	public void setCeldasEscenario(Celda[][] celdasEscenario) {
 		this.celdasEscenario = celdasEscenario;
 	}
 	
@@ -108,24 +108,29 @@ public class GUIPanelMenu extends JPanel{
 
 class ActionAleatorizarObstaculos implements ActionListener{
 
-	private Cell[][] celdasEscenario;
+	private Celda[][] celdasEscenario;
 	
 	private JTextField valorAleatorio;
 	
-	private JPanel panel;
+	private GUIPanelEscenario escenario;
 	
 	private final Random random = new Random();
 	
-	public ActionAleatorizarObstaculos(Cell[][] celdasEscenario, JPanel panel, JTextField valorAleatorio) {
-		this.panel = panel;
+	private GUIPanelMenu menu;
+	
+	public ActionAleatorizarObstaculos(Celda[][] celdasEscenario, GUIPanelEscenario escenario, 
+			JTextField valorAleatorio, GUIPanelMenu menu) {
+		this.escenario = escenario;
 		this.valorAleatorio = valorAleatorio;
 		this.celdasEscenario = celdasEscenario;
+		this.menu = menu;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		celdasEscenario = menu.getCeldasEscenario();
 		aleatorizarObstaculos();
-		panel.repaint();
+		escenario.repaint();
 	}
 	
 	private void aleatorizarObstaculos() {
@@ -135,9 +140,9 @@ class ActionAleatorizarObstaculos implements ActionListener{
 				
 				int valorAleatorio = random.nextInt(Integer.parseInt(aux));
 				if(valorAleatorio==0) {
-					celdasEscenario[i][j].setOccupied(true);
+					celdasEscenario[i][j].setOcupada(true);
 				}else {
-					celdasEscenario[i][j].setOccupied(false);
+					celdasEscenario[i][j].setOcupada(false);
 				}
 			}
 		}
@@ -164,7 +169,7 @@ class MouseListenerPosicion implements MouseListener{
 		GUICelda celda = escenario.obtenerCeldaGrafica(arg0.getX(), arg0.getY());
 		if(celda!=null) {
 			if(obstaculos.isSelected()) {
-				celda.getCelda().setOccupied(!celda.getCelda().isOccupied());
+				celda.getCelda().setOcupada(!celda.getCelda().estaOcupada());
 			}else if(inicio.isSelected()) {
 				escenario.establecerCeldaInicial(celda);
 				escenario.ponerCocheEnCelda(celda.getIndiceMatrizI(), celda.getIndiceMatrizJ());

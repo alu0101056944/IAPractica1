@@ -3,11 +3,13 @@ package practica.frontend;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import practica.backend.Cell;
+import practica.backend.Celda;
 
 public class GUICelda {
 	
-	private Cell celda;
+	private Celda celda;
+	
+	private boolean tuvoCoche;
 
 	private int posX, posY;
 	
@@ -15,7 +17,7 @@ public class GUICelda {
 	
 	private int longitud;
 	
-	public GUICelda(Cell celda) {
+	public GUICelda(Celda celda) {
 		this.setCelda(celda);
 	}
 	
@@ -39,12 +41,14 @@ public class GUICelda {
 	 * @return Amarillo si esta ocupada, azul si inicial, negra si esta libre
 	 */
 	private Color calcularColor() {
-		if(celda.isInitial()) {
+		if(celda.esInicio()) {
 			return Color.CYAN;
-		}else if(celda.isFinish()) {
+		}else if(celda.esMeta()) {
 			return Color.GREEN;
-		}else if(celda.isOccupied()) {
+		}else if(celda.estaOcupada()) {
 			return Color.YELLOW;
+		}else if (isTuvoCoche()&&!celda.estaOcupada()) {
+			return Color.GRAY;
 		}
 		return new Color(167, 184, 164);			//Variacion de verde suave para los ojos
 	}
@@ -52,14 +56,14 @@ public class GUICelda {
 	/**
 	 * @return the celda
 	 */
-	public Cell getCelda() {
+	public Celda getCelda() {
 		return celda;
 	}
 
 	/**
 	 * @param celda the celda to set
 	 */
-	public void setCelda(Cell celda) {
+	public void setCelda(Celda celda) {
 		this.celda = celda;
 	}
 
@@ -133,6 +137,14 @@ public class GUICelda {
 	 */
 	public void setIndiceMatrizJ(int indiceMatrizJ) {
 		this.indiceMatrizJ = indiceMatrizJ;
+	}
+
+	public boolean isTuvoCoche() {
+		return tuvoCoche;
+	}
+
+	public void setTuvoCoche(boolean tuvoCoche) {
+		this.tuvoCoche = tuvoCoche;
 	}
 	
 }
