@@ -41,25 +41,26 @@ public class NodoBusqueda {
 		Celda celdaIzquierda = getCelda().getCeldaIzquierda();
 		if(celdaArriba!=null&&!celdaArriba.estaOcupada()) {
 			NodoBusqueda hijoArriba = new NodoBusqueda(celdaArriba, this);
-			hijoArriba.setG(this.getG()+1);
+			hijoArriba.setAccion("arriba");
 			agregarHijo(hijoArriba);
 		}
 		if(celdaAbajo!=null&&!celdaAbajo.estaOcupada()) {
 			NodoBusqueda hijoAbajo = new NodoBusqueda(celdaAbajo, this);
-			hijoAbajo.setG(this.getG()+1);
+			hijoAbajo.setAccion("abajo");
 			agregarHijo(hijoAbajo);
 		}
 		if(celdaDerecha!=null&&!celdaDerecha.estaOcupada()) {
 			NodoBusqueda hijoDerecha = new NodoBusqueda(celdaDerecha, this);
-			hijoDerecha.setG(this.getG()+1);
+			hijoDerecha.setAccion("derecha");
 			agregarHijo(hijoDerecha);
 		}
 		if(celdaIzquierda!=null&&!celdaIzquierda.estaOcupada()) {
 			NodoBusqueda hijoIzquierda = new NodoBusqueda(celdaIzquierda, this);
-			hijoIzquierda.setG(this.getG()+1);
+			hijoIzquierda.setAccion("izquierda");
 			agregarHijo(hijoIzquierda);
 		}
 	}
+
 	
 	public boolean esMeta() {
 		return getCelda().esMeta();
@@ -117,8 +118,7 @@ public class NodoBusqueda {
 	@Override
 	public boolean equals(Object o) {
 		NodoBusqueda nb = (NodoBusqueda) o;
-		return nb.getAccion()==this.getAccion() && nb.getF()==this.getF() &&
-				nb.getG()==this.getG() && nb.getH()==this.getH();
+		return getCelda().equals(nb.getCelda());
 	}
 
 	public NodoBusqueda getNodoPadre() {

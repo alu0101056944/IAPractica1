@@ -42,8 +42,8 @@ public class GUIMovementHandler{
 		if(indiceMovimientoActual<listaAcciones.size()) {
 			String sigMovimiento = listaAcciones.get(indiceMovimientoActual);
 			setCeldaObjetivo(listaObjetivos.get(indiceMovimientoActual));
-			System.err.println("celdaSig:" + listaObjetivos.get(indiceMovimientoActual).getIndiceMatrizI() + " , " + 
-					listaObjetivos.get(indiceMovimientoActual).getIndiceMatrizJ());
+//			System.err.println("celdaSig:" + listaObjetivos.get(indiceMovimientoActual).getIndiceMatrizI() + " , " + 
+//					listaObjetivos.get(indiceMovimientoActual).getIndiceMatrizJ());
 			indiceMovimientoActual++;
 			panelEscenario.setMoviendose(true);
 			if(sigMovimiento.equals("derecha")) {
@@ -75,7 +75,7 @@ public class GUIMovementHandler{
 		GUICelda celdaConCoche = panelEscenario.getCeldaConCoche();
 		int filaCeldaObjetivo = celdaConCoche.getIndiceMatrizI();
 		int columnaCeldaObjetivo = celdaConCoche.getIndiceMatrizJ();
-		System.err.println("GUIMovementHandler.formarListasCeldasCamino, fila:" + filaCeldaObjetivo + " , columna:" + columnaCeldaObjetivo);
+//		System.err.println("GUIMovementHandler.formarListasCeldasCamino, fila:" + filaCeldaObjetivo + " , columna:" + columnaCeldaObjetivo);
 		Iterator<String> itr = acciones.iterator();
 		while(itr.hasNext()) {
 			String accionActual = itr.next();
@@ -94,7 +94,7 @@ public class GUIMovementHandler{
 	}
 	
 	public void moverADerecha() {
-		System.out.println("GUIMovementHandler.moverADerecha(): A DERECHA");
+//		System.out.println("GUIMovementHandler.moverADerecha(): A DERECHA");
 		ejecutor.setCeldaObjetivo(celdaObjetivo);
 		ejecutor.calcularDireccion();
 		ejecutor.setNecesitaCalcularVelocidad(true);
@@ -102,7 +102,7 @@ public class GUIMovementHandler{
 	}
 	
 	public void moverAIzquierda() {
-		System.out.println("GUIMovementHandler.moverAIzquierda(): A IZQUIERDA");
+//		System.out.println("GUIMovementHandler.moverAIzquierda(): A IZQUIERDA");
 		ejecutor.setCeldaObjetivo(celdaObjetivo);
 		ejecutor.calcularDireccion();
 		ejecutor.setNecesitaCalcularVelocidad(true);
@@ -110,7 +110,7 @@ public class GUIMovementHandler{
 	}
 	
 	public void moverArriba() {
-		System.out.println("GUIMovementHandler.moverArriba(): Arriba");
+//		System.out.println("GUIMovementHandler.moverArriba(): Arriba");
 		ejecutor.setCeldaObjetivo(celdaObjetivo);
 		ejecutor.calcularDireccion();
 		ejecutor.setNecesitaCalcularVelocidad(true);
@@ -118,7 +118,7 @@ public class GUIMovementHandler{
 	}
 
 	public void moverAbajo() {
-		System.out.println("GUIMovementHandler.moverAbajo(): Abajo");
+//		System.out.println("GUIMovementHandler.moverAbajo(): Abajo");
 		ejecutor.setCeldaObjetivo(celdaObjetivo);
 		ejecutor.calcularDireccion();
 		ejecutor.setNecesitaCalcularVelocidad(true);
@@ -244,24 +244,24 @@ class ActionListenerPrueba implements ActionListener{
 	public void calcularDireccion() {
 		if(celdaObjetivo.getPosX()<escenario.getCeldaConCoche().getPosX()) {
 			this.direccionX = -1;
-			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida a izquierda");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida a izquierda");
 		}else if(celdaObjetivo.getPosX()>escenario.getCeldaConCoche().getPosX()) {
 			this.direccionX = 1;
-			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida a derecha");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida a derecha");
 		}else {
 			direccionX = 0;
-			System.err.print("GUIMovementHandler.calcularDireccion(): la celda objetivo es la misma que la actual, asigno 0 a la dirX");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): la celda objetivo es la misma que la actual, asigno 0 a la dirX");
 		}
 		
 		if(celdaObjetivo.getPosY()<escenario.getCeldaConCoche().getPosY()) {
 			this.direccionY = -1;
-			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida hacia arriba");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida hacia arriba");
 		}else if(celdaObjetivo.getPosY()>escenario.getCeldaConCoche().getPosY()) {
 			this.direccionY = 1;
-			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida hacia abajo");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): direccion establecida hacia abajo");
 		}else {
 			direccionY = 0;
-			System.err.print("GUIMovementHandler.calcularDireccion(): la celda objetivo es la misma que la actual, asigno 0 a la dirY");
+//			System.err.print("GUIMovementHandler.calcularDireccion(): la celda objetivo es la misma que la actual, asigno 0 a la dirY");
 		}
 	}
 	
@@ -281,16 +281,16 @@ class ActionListenerPrueba implements ActionListener{
 				calcularVelocidad(arg0);
 				setNecesitaCalcularVelocidad(false);
 			}
-			System.out.println("GUIMovementHandler.action(): posXFinal: " + posXFinal + " |posYFinal: " + posYFinal + "|posXCoche:" + posXCoche +
-					"|posYCoche:" + posYCoche);
-			System.out.println("GUIMovementHandler.action(): comprueba posiciones objetivo");
+//			System.out.println("GUIMovementHandler.action(): posXFinal: " + posXFinal + " |posYFinal: " + posYFinal + "|posXCoche:" + posXCoche +
+//					"|posYCoche:" + posYCoche);
+//			System.out.println("GUIMovementHandler.action(): comprueba posiciones objetivo");
 			if(haLlegado()) {
 				Timer timer = (Timer) arg0.getSource();
 				timer.stop();
 				escenario.setMoviendose(false);
 				escenario.setPendienteCalcularCeldaConCoche(true);
 				escenario.repaint();
-				System.err.println("GUIMovementHandler.action(): objetivo cumplido, movimiento parado");
+//				System.err.println("GUIMovementHandler.action(): objetivo cumplido, movimiento parado");
 				return;
 			}else {
 				moverSegunDireccion();
@@ -301,11 +301,11 @@ class ActionListenerPrueba implements ActionListener{
 	}
 	
 	private void calcularVelocidad(ActionEvent e) {
-		System.err.println("GUIMovementHandler.timer.calcularVelocidad(...)");
+//		System.err.println("GUIMovementHandler.timer.calcularVelocidad(...)");
 		int distanciaHaciaXFinal = Math.abs(coche.getPosBaseX()-celdaObjetivo.getPosX());
 		int distanciaHaciaYFinal = Math.abs(coche.getPosBaseY()-celdaObjetivo.getPosY());
 		int distanciaTotal = (int)Math.sqrt( (distanciaHaciaXFinal*distanciaHaciaXFinal) + (distanciaHaciaYFinal*distanciaHaciaYFinal) );
-		System.err.println("velocidad: " + (distanciaTotal));
+//		System.err.println("velocidad: " + (distanciaTotal));
 		Timer t = ((Timer)e.getSource());
 		t.setDelay(10/distanciaTotal);
 	}
@@ -320,10 +320,10 @@ class ActionListenerPrueba implements ActionListener{
 	private void moverSegunDireccion() {
 		if(direccionX!=0 && direccionY==0) {//horizontal
 			coche.setMargenX(coche.getMargenX()+(direccionX));
-			System.err.println("GUIMovementHandler.action(): moverse en horizontal");
+//			System.err.println("GUIMovementHandler.action(): moverse en horizontal");
 		}else if (direccionX==0 && direccionY!=0) {//vertical
 			coche.setMargenY(coche.getMargenY()+(direccionY));
-			System.err.println("GUIMovementHandler.action(): moverse en vertical");
+//			System.err.println("GUIMovementHandler.action(): moverse en vertical");
 		}
 	}
 	

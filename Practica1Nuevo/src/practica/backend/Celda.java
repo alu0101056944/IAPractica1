@@ -104,5 +104,10 @@ public class Celda {
 		this.columna = columna;
 	}
 	
-	
+	@Override
+	public boolean equals(Object o) {
+		Celda otraCelda = (Celda) o;
+		return this.getFila()==otraCelda.getFila() && 
+				this.getColumna()==otraCelda.getColumna();
+	}
 }

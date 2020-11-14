@@ -25,12 +25,13 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		NodoBusqueda metaOptima = null;
 		while(getNodosPorExpandir().size()>0) {
 			NodoBusqueda siguienteNodo = obtenerNodoSinExpandirConMenorMerito();
-			
 			if(siguienteNodo.esMeta() && siguienteNodo.mejorMetaQue(metaOptima)) {
 				metaOptima = siguienteNodo;
 				recalcularCaminoCoche(siguienteNodo);
 			}else {
-				moverCoche(siguienteNodo.getAccion());	
+				moverCoche(siguienteNodo.getAccion());
+				System.err.println(siguienteNodo.getAccion() + " I" + siguienteNodo.getCelda().getFila() + 
+						" J " + siguienteNodo.getCelda().getColumna());
 			}
 			
 			if(metaOptima!=null) {
@@ -116,6 +117,7 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		Iterator<NodoBusqueda> itr = nodoCalculando.iterator();
 		while(itr.hasNext()) {
 			NodoBusqueda nodoHijoActual = itr.next();
+			nodoHijoActual.setG(nodoHijoActual.getNodoPadre().getG()+1);
 			nodoHijoActual.setH(distanciaEuclidea(nodoHijoActual.getCelda(), celdaMeta));
 			nodoHijoActual.setF(nodoHijoActual.getG()+nodoHijoActual.getH());
 		}

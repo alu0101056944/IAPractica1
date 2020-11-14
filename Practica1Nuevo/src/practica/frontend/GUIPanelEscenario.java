@@ -74,14 +74,14 @@ public class GUIPanelEscenario extends JPanel{
 		for(int i = 0; i < guiCeldasEscenario.length; i++) {
 			for(int j = 0; j < guiCeldasEscenario[0].length; j++) {
 				GUICelda celda = guiCeldasEscenario[i][j];
-				System.out.println(posX + " > " + celda.getPosX() + " | " + 
-						posY + " > " + celda.getPosY() + " | " + 
-						posX + " < " + (celda.getPosX()+celda.getLongitud()) + " | " + 
-						posY + " < " + (celda.getPosY()+celda.getLongitud()));
+//				System.out.println(posX + " > " + celda.getPosX() + " | " + 
+//						posY + " > " + celda.getPosY() + " | " + 
+//						posX + " < " + (celda.getPosX()+celda.getLongitud()) + " | " + 
+//						posY + " < " + (celda.getPosY()+celda.getLongitud()));
 				if(posX >= celda.getPosX() && posY >= celda.getPosY() &&
 						posX <= celda.getPosX()+celda.getLongitud() &&
 						posY <= celda.getPosY()+celda.getLongitud()) {
-					System.err.println("GUIPanelEscenario.obtenerCeldaGrafica(...) encontro coincidencia con celda");
+//					System.err.println("GUIPanelEscenario.obtenerCeldaGrafica(...) encontro coincidencia con celda");
 					return celda;
 				}
 			}
@@ -195,7 +195,7 @@ public class GUIPanelEscenario extends JPanel{
 			}
 			centrarCocheEnSuCelda();
 		}else {
-			System.out.println("GUIPanelEscenario.calcularCoche(...) i: " + celdaConCoche.getIndiceMatrizI() + " j:" + celdaConCoche.getIndiceMatrizJ());
+//			System.out.println("GUIPanelEscenario.calcularCoche(...) i: " + celdaConCoche.getIndiceMatrizI() + " j:" + celdaConCoche.getIndiceMatrizJ());
 			ajustarCocheANuevaEscala();
 //			System.out.println("GUIPanelEscenario: en calcularCoche(...): coche ajustado, posX=" + (coche.getPosBaseX()+coche.getMargenX()));
 		}
@@ -205,7 +205,7 @@ public class GUIPanelEscenario extends JPanel{
 	private void calcularNuevaCeldaConCoche() {
 		GUICelda nuevaCeldaConCoche = obtenerCeldaGrafica(coche.getPosBaseX()+coche.getMargenX(), 
 				coche.getPosBaseY()+coche.getMargenY());
-		System.err.println("GUIPanelEscenario.calcularCoche().coche.X: " + (nuevaCeldaConCoche.getIndiceMatrizI()) + "coche.Y: " + (nuevaCeldaConCoche.getIndiceMatrizJ()));
+//		System.err.println("GUIPanelEscenario.calcularCoche().coche.X: " + (nuevaCeldaConCoche.getIndiceMatrizI()) + "coche.Y: " + (nuevaCeldaConCoche.getIndiceMatrizJ()));
 		ponerCocheEnCelda(nuevaCeldaConCoche.getIndiceMatrizI(), nuevaCeldaConCoche.getIndiceMatrizJ());
 		coche.setMargenX(0);
 		coche.setMargenY(0);
@@ -257,28 +257,28 @@ public class GUIPanelEscenario extends JPanel{
 	}
 	
 	public void moverADerecha() {
-		System.err.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
+//		System.err.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
 		moviendose = true;
 		hiloMovimiento.setCeldaObjetivo(guiCeldasEscenario[getCeldaConCoche().getIndiceMatrizI()][getCeldaConCoche().getIndiceMatrizJ()+1]);
 		hiloMovimiento.moverADerecha();
 	}
 	
 	public void moverAIzquierda() {
-		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
+//		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
 		moviendose = true;
 		hiloMovimiento.setCeldaObjetivo(guiCeldasEscenario[getCeldaConCoche().getIndiceMatrizI()][getCeldaConCoche().getIndiceMatrizJ()-1]);
 		hiloMovimiento.moverAIzquierda();
 	}
 	
 	public void moverAbajo() {
-		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
+//		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
 		moviendose = true;
 		hiloMovimiento.setCeldaObjetivo(guiCeldasEscenario[getCeldaConCoche().getIndiceMatrizI()+1][getCeldaConCoche().getIndiceMatrizJ()]);
 		hiloMovimiento.moverAIzquierda();
 	}
 	
 	public void moverArriba() {
-		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
+//		System.out.println("GUIPanelEscenario.moverADerecha(): viejoI: " + celdaConCoche.getIndiceMatrizI() + " viejoJ:" + celdaConCoche.getIndiceMatrizJ());
 		moviendose = true;
 		hiloMovimiento.setCeldaObjetivo(guiCeldasEscenario[getCeldaConCoche().getIndiceMatrizI()-1][getCeldaConCoche().getIndiceMatrizJ()]);
 		hiloMovimiento.moverAIzquierda();
@@ -347,7 +347,7 @@ public class GUIPanelEscenario extends JPanel{
 	 * @param j es la columna de la celda
 	 */
 	public void ponerCocheEnCelda(int i, int j) {
-		System.out.println("GUIPanelEscenario.ponerCocheEnCelda(...): celda actualizada" + i + " " + j);
+//		System.out.println("GUIPanelEscenario.ponerCocheEnCelda(...): celda actualizada" + i + " " + j);
 		this.celdaConCoche = guiCeldasEscenario[i][j];
 		celdaConCoche.setTuvoCoche(true);
 	}
