@@ -2,6 +2,7 @@ package practica.backend;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Stack;
 
 public class BusquedaEstrella implements IAlgoritmoBusqueda{
 	
@@ -17,25 +18,67 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 	}
 	
 	@Override
-	public void buscar() {
-		NodoBusqueda nodoInicial = new NodoBusqueda(coche.getCeldaConCoche());
+	public void buscar(Celda celdaMeta) {
+		NodoBusqueda nodoInicial = new NodoBusqueda(coche.getCeldaConCoche(), null);
 		getNodosPorExpandir().add(nodoInicial);
 		
 		NodoBusqueda metaOptima = null;
-		boolean posibleMejorMeta = true;
 		while(getNodosPorExpandir().size()>0) {
 			NodoBusqueda siguienteNodo = obtenerNodoSinExpandirConMenorMerito();
+			
 			if(siguienteNodo.esMeta() && siguienteNodo.mejorMetaQue(metaOptima)) {
 				metaOptima = siguienteNodo;
+				recalcularCaminoCoche(siguienteNodo);
+			}else {
 				moverCoche(siguienteNodo.getAccion());	
 			}
 			
-			if(metaOptima!=null && metaOptima.getF()>siguienteNodo.getF()) {
+			if(metaOptima!=null) {
+				if(siguienteNodo.getF() < metaOptima.getF()) {
+					expandirNodo(siguienteNodo);
+					calcularMeritos(siguienteNodo, celdaMeta);
+					ordenarListaNodosPorExpandir();
+				}
+			}else {
 				expandirNodo(siguienteNodo);
-				calcularMeritos(siguienteNodo);
-				//Ordenar lista segun f (0 es menor que 1)
+				calcularMeritos(siguienteNodo, celdaMeta);
+				ordenarListaNodosPorExpandir();
 			}
 		}
+	}
+	
+	/**
+	 * Quiero obtener la lista de acciones que nos llevo al nodo meta actual para luego
+	 * aplicarlas de manera inversa al coche, es decir, de inicio a meta. Para ello
+	 * uso una pila.
+	 * 
+	 * @param nodoMeta Cuyo padre indica el camino hacia el inicio
+	 */
+	private void recalcularCaminoCoche(NodoBusqueda nodoMeta) {
+		coche.limpiarListaAcciones();
+		Stack<String> pilaAcciones = new Stack<String>();
+		NodoBusqueda nodoPadre = nodoMeta.getNodoPadre();
+		while(nodoPadre!=null) {
+			pilaAcciones.add(nodoPadre.getAccion());
+			nodoPadre = nodoPadre.getNodoPadre();
+		}
+		Iterator<String> itr = pilaAcciones.iterator();
+		while(itr.hasNext()) {
+			moverCoche(itr.next());
+		}
+	}
+	
+	//Algoritmo de burbuja O(n^2)tiempo, O(1)espacio
+	private void ordenarListaNodosPorExpandir() {
+        for (int i = 0; i < getNodosPorExpandir().size()-1; i++) { 
+            for (int j = 0; j < getNodosPorExpandir().size()-i-1; j++) {
+            	if (getNodosPorExpandir().get(j).getF() > getNodosPorExpandir().get(j+1).getF()) { 
+                    NodoBusqueda temp = getNodosPorExpandir().get(j); 
+                    getNodosPorExpandir().set(j, getNodosPorExpandir().get(j+1));
+                    getNodosPorExpandir().set(j+1, temp); 
+                } 
+            }
+        }
 	}
 	
 	private NodoBusqueda obtenerNodoSinExpandirConMenorMerito() {
@@ -61,21 +104,27 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		Iterator<NodoBusqueda> itr = nodoPadre.iterator();
 		while(itr.hasNext()) {
 			NodoBusqueda nodoHijo = itr.next();
-			if(!getNodosExpandidos().contains(nodoHijo)) {
+			if(!getNodosExpandidos().contains(nodoHijo) &&
+					!getNodosPorExpandir().contains(nodoHijo)) {
 				getNodosPorExpandir().add(nodoHijo);
 			}
 		}
 	}
 	
 	//Calcular los meritos de los nodos en la lista de por expandir
-	private void calcularMeritos(NodoBusqueda NodoCalculando) {
-		
+	private void calcularMeritos(NodoBusqueda nodoCalculando, Celda celdaMeta) {
+		Iterator<NodoBusqueda> itr = nodoCalculando.iterator();
+		while(itr.hasNext()) {
+			NodoBusqueda nodoHijoActual = itr.next();
+			nodoHijoActual.setH(distanciaEuclidea(nodoHijoActual.getCelda(), celdaMeta));
+			nodoHijoActual.setF(nodoHijoActual.getG()+nodoHijoActual.getH());
+		}
 	}
 	
-	@Override
-	public boolean encontroLaMeta() {
-		// TODO Auto-generated method stub
-		return true;
+	private int distanciaEuclidea(Celda celdaOrigen, Celda celdaDestino) {
+		int distanciaFilas = Math.abs(celdaOrigen.getFila()-celdaDestino.getFila());
+		int distanciaColumnas = Math.abs(celdaOrigen.getColumna()-celdaDestino.getColumna());
+		return (int) Math.sqrt(((distanciaFilas*distanciaFilas) + (distanciaColumnas*distanciaColumnas)));
 	}
 
 	public ArrayList<NodoBusqueda> getNodosExpandidos() {

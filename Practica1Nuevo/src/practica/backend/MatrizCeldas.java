@@ -24,6 +24,8 @@ public class MatrizCeldas {
 		for(int i = 0; i < numFilas; i++) {			//inicializamos la matriz
 			for(int j = 0; j < numColumnas; j++){
 				matrizCeldas[i][j] = new Celda();
+				matrizCeldas[i][j].setFila(i);
+				matrizCeldas[i][j].setColumna(j);
 			}
 		}
 		matrizCeldas[filaInicial][columnaInicial].setInicio(true);
@@ -35,6 +37,7 @@ public class MatrizCeldas {
 	
 	public void setMatrizCeldas(Celda[][] nuevaMatriz) {
 		this.matrizCeldas = nuevaMatriz;
+		establecerVecinos();
 	}
 	
 	private void establecerVecinos() {
@@ -48,7 +51,7 @@ public class MatrizCeldas {
 	/**
 	 * Asigna las celdas vecinas de la celda en la fila i, columna j
 	 * 
-	 * Hay cuatro categorias: esquina, borde, interna. Cada posicion
+	 * Hay tres categorias: esquina, borde, interna. Cada posicion
 	 * tiene un algoritmo de asignacion de celda vecina distinta.
 	 * 
 	 * @param matrizCeldas para comprobar ancho y alto

@@ -56,21 +56,17 @@ public class Coche {
 	 * Le dice al algoritmo que busque. El algoritmo utilizara los metodos
 	 * de moverArriba(), etc para ir actualizando la lista de acciones.
 	 */
-	public void buscarCamino() {
+	public void buscarCamino(Celda celdaMeta) {
 		IAlgoritmoBusqueda busqueda = new BusquedaEstrella(this);
-		busqueda.buscar(); //Ejecuta el algoritmo
-		if(!busqueda.encontroLaMeta()) {
-			listaAcciones.add("noEncontrada");
-		}else {
-			getListaAcciones().add("derecha");
-			getListaAcciones().add("derecha");
-			getListaAcciones().add("abajo");
-			getListaAcciones().add("derecha");
-			getListaAcciones().add("abajo");
-			getListaAcciones().add("derecha");
-			getListaAcciones().add("derecha");
-			getListaAcciones().add("arriba");
-		}
+		busqueda.buscar(celdaMeta); //Ejecuta el algoritmo
+//		getListaAcciones().add("derecha");
+//		getListaAcciones().add("derecha");
+//		getListaAcciones().add("abajo");
+//		getListaAcciones().add("derecha");
+//		getListaAcciones().add("abajo");
+//		getListaAcciones().add("derecha");
+//		getListaAcciones().add("derecha");
+//		getListaAcciones().add("arriba");
 	}
 	
 	public void moverArriba() {

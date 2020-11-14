@@ -17,7 +17,7 @@ public class Simulador {
 	public void ejecutarBusqueda(GUICelda[][] escenario) {
 		actualizarEscenario(escenario);
 		coche.limpiarListaAcciones();
-		coche.buscarCamino();
+		coche.buscarCamino(getEscenario().getCeldaMeta());
 	}
 	
 	/**

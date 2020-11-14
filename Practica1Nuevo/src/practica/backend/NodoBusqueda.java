@@ -13,10 +13,13 @@ public class NodoBusqueda {
 	
 	private String accionParaAlcanzarlo;
 	
-	public NodoBusqueda(Celda celda) {
+	private NodoBusqueda nodoPadre;
+	
+	public NodoBusqueda(Celda celda, NodoBusqueda nodoPadre) {
 		accionParaAlcanzarlo = "pendienteDeAsignar";
 		nodosHijo = new ArrayList<NodoBusqueda>();
 		this.setCelda(celda);
+		this.setNodoPadre(nodoPadre);
 	}
 	
 	private ArrayList<NodoBusqueda> getNodosHijo() {
@@ -37,16 +40,24 @@ public class NodoBusqueda {
 		Celda celdaDerecha = getCelda().getCeldaDerecha();
 		Celda celdaIzquierda = getCelda().getCeldaIzquierda();
 		if(celdaArriba!=null&&!celdaArriba.estaOcupada()) {
-			agregarHijo(new NodoBusqueda(celdaArriba));
+			NodoBusqueda hijoArriba = new NodoBusqueda(celdaArriba, this);
+			hijoArriba.setG(this.getG()+1);
+			agregarHijo(hijoArriba);
 		}
 		if(celdaAbajo!=null&&!celdaAbajo.estaOcupada()) {
-			agregarHijo(new NodoBusqueda(celdaAbajo));
+			NodoBusqueda hijoAbajo = new NodoBusqueda(celdaAbajo, this);
+			hijoAbajo.setG(this.getG()+1);
+			agregarHijo(hijoAbajo);
 		}
 		if(celdaDerecha!=null&&!celdaDerecha.estaOcupada()) {
-			agregarHijo(new NodoBusqueda(celdaDerecha));
+			NodoBusqueda hijoDerecha = new NodoBusqueda(celdaDerecha, this);
+			hijoDerecha.setG(this.getG()+1);
+			agregarHijo(hijoDerecha);
 		}
 		if(celdaIzquierda!=null&&!celdaIzquierda.estaOcupada()) {
-			agregarHijo(new NodoBusqueda(celdaIzquierda));
+			NodoBusqueda hijoIzquierda = new NodoBusqueda(celdaIzquierda, this);
+			hijoIzquierda.setG(this.getG()+1);
+			agregarHijo(hijoIzquierda);
 		}
 	}
 	
@@ -108,6 +119,14 @@ public class NodoBusqueda {
 		NodoBusqueda nb = (NodoBusqueda) o;
 		return nb.getAccion()==this.getAccion() && nb.getF()==this.getF() &&
 				nb.getG()==this.getG() && nb.getH()==this.getH();
+	}
+
+	public NodoBusqueda getNodoPadre() {
+		return nodoPadre;
+	}
+
+	public void setNodoPadre(NodoBusqueda nodoPadre) {
+		this.nodoPadre = nodoPadre;
 	}
 
 	
