@@ -35,6 +35,14 @@ public class GUIPanelEscenario extends JPanel{
 		this.setMatrizCeldas(matriz);
 	}
 	
+	public void limpiarRecorrido() {
+		for(int i = 0; i < getMatrizGUICeldasEscenario().length; i++) {
+			for(int j = 0; j < getMatrizGUICeldasEscenario()[0].length; j++) {
+				getMatrizGUICeldasEscenario()[i][j].setTuvoCoche(false);
+			}
+		}
+	}
+	
 	/**
 	 * Dibuja una matriz de celdas y un coche. Se adapta al tamanyo de ventana.
 	 * Este metodo se llama cada vez que se actualiza la ventana, incluyendo

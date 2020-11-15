@@ -2,11 +2,17 @@ package practica.frontend;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -38,7 +44,7 @@ public class GUISimulador extends GUIWindow{
 		panelMenu.setPreferredSize(new Dimension(200, 38));
 		panelMenu.setBackground(cPInt);
 		
-		JButton botonEjecutar = new JButton("Ejecutar");
+		JButton botonEjecutar = new JButton("Buscar");
 		botonEjecutar.addActionListener(new EventoEjecutar(simulador, panelEscenario));
 		panelMenu.add(botonEjecutar);
 		
@@ -46,7 +52,18 @@ public class GUISimulador extends GUIWindow{
 		EventoCrear eCrear = new EventoCrear(panelEscenario, panelMenu);
 		botonCrear.addActionListener(eCrear);
 		panelMenu.add(botonCrear);
+		
+		JButton botonAbrirFichero = new JButton("Abrir fichero");
+		botonAbrirFichero.setSize(new Dimension(80, botonCrear.getHeight()));
+		Font f = new Font(botonAbrirFichero.getFont().getFontName(), Font.PLAIN, 10);
+		EventoAbrirFichero eventoAbrir = new EventoAbrirFichero(this, panelMenu, panelEscenario);
+		botonAbrirFichero.addActionListener(eventoAbrir);
+		botonAbrirFichero.setFont(f);
+		panelMenu.add(botonAbrirFichero);
+		
 		getContentPane().add(panelMenu, BorderLayout.NORTH);
+		
+		
 		
 		panelEscenario.addMouseListener(panelMenu.monitorInteraccionRaton());
 		
@@ -79,6 +96,9 @@ class EventoEjecutar implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		simulador.ejecutarBusqueda(panel.getMatrizGUICeldasEscenario());
+		panel.limpiarRecorrido();
+		panel.ponerCocheEnCelda(simulador.getEscenario().getCeldaInicial().getFila(), 
+				simulador.getEscenario().getCeldaInicial().getColumna());
 		panel.ejecutarListaAcciones(simulador.getListaAcciones());
 	}
 	
@@ -240,6 +260,89 @@ class EventoCrear implements ActionListener{
 		this.posYMeta = posYMeta;
 	}
 
+}
+
+class EventoAbrirFichero implements ActionListener{
+
+	final JFileChooser fc = new JFileChooser();
+	
+	private GUISimulador ventanaPadre;
+	
+	private GUIPanelMenu panelMenu;
+	
+	private GUIPanelEscenario panelEscenario;
+	
+	public EventoAbrirFichero(GUISimulador ventanaPadre, GUIPanelMenu panelMenu,
+			GUIPanelEscenario panelEscenario) {
+		this.ventanaPadre = ventanaPadre;
+		this.panelEscenario = panelEscenario;
+		this.panelMenu = panelMenu;
+		fc.setCurrentDirectory(new File("."));
+	}
+	 
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		int resultadoOperacion = fc.showOpenDialog(ventanaPadre);
+		
+		if(resultadoOperacion==JFileChooser.APPROVE_OPTION) {
+			File f = fc.getSelectedFile();
+			crearMatrizPorArchivo(f);
+		}
+	}
+	
+	private void crearMatrizPorArchivo(File f) {
+		try(BufferedReader bf = Files.newBufferedReader(f.toPath())){
+			
+			Celda[][] matriz = crearMatrizConDatosDelArchivo(bf);
+			
+			bf.readLine();							//Obtenemos la fila y columna del inicio
+			bf.readLine();
+			String posInicio = bf.readLine();
+			String[] tokensPosInicio = posInicio.split(" ");
+			int filaInicio = Integer.parseInt(tokensPosInicio[0]);
+			int columnaInicio = Integer.parseInt(tokensPosInicio[1]);
+			matriz[filaInicio][columnaInicio].setInicio(true);
+			
+			bf.readLine();							//Obtenemos la fila y columna de la meta
+			bf.readLine();
+			String posMeta = bf.readLine();
+			String[] tokensPosMeta = posMeta.split(" ");
+			int filaMeta = Integer.parseInt(tokensPosMeta[0]);
+			int columnaMeta = Integer.parseInt(tokensPosMeta[1]);
+			matriz[filaMeta][columnaMeta].setMeta(true);
+			
+			bf.readLine();
+			bf.readLine();
+			String linea = null;
+			while((linea = bf.readLine())!=null) {
+				String[] tokensObstaculos = linea.split(" ");
+				int filaObstaculo = Integer.parseInt(tokensObstaculos[0]);
+				int columnaObstaculo = Integer.parseInt(tokensObstaculos[1]);
+				matriz[filaObstaculo][columnaObstaculo].setOcupada(true);
+			}
+			
+			panelEscenario.setMatrizCeldas(matriz);
+			panelMenu.setCeldasEscenario(matriz);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Celda[][] crearMatrizConDatosDelArchivo(BufferedReader bf) throws IOException {
+		bf.readLine();
+		String segundaLinea = bf.readLine();
+		String[] tokensCrearMatriz = segundaLinea.split(" ");
+		int numFilas = Integer.parseInt(tokensCrearMatriz[0]);
+		int numColumnas = Integer.parseInt(tokensCrearMatriz[1]);
+		Celda[][] celdaMatriz = new Celda[numFilas][numColumnas];
+		for(int i = 0; i < numFilas; i++) {
+			for(int j = 0; j < numColumnas; j++) {
+				celdaMatriz[i][j] = new Celda();
+			}
+		}
+		return celdaMatriz;
+	}
+	
 }
 
 }

@@ -1,5 +1,6 @@
 package practica.backend;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Stack;
@@ -25,15 +26,14 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		NodoBusqueda metaOptima = null;
 		while(getNodosPorExpandir().size()>0) {
 			NodoBusqueda siguienteNodo = obtenerNodoSinExpandirConMenorMerito();
-			if(siguienteNodo.esMeta() && siguienteNodo.mejorMetaQue(metaOptima)) {
+
+			if(siguienteNodo.esMeta() && (siguienteNodo.mejorMetaQue(metaOptima) || metaOptima==null)){
 				metaOptima = siguienteNodo;
 				recalcularCaminoCoche(siguienteNodo);
-			}else {
-				moverCoche(siguienteNodo.getAccion());
-				System.err.println(siguienteNodo.getAccion() + " I" + siguienteNodo.getCelda().getFila() + 
-						" J " + siguienteNodo.getCelda().getColumna());
 			}
 			
+			getNodosPorExpandir().remove(siguienteNodo);
+			getNodosExpandidos().add(siguienteNodo);
 			if(metaOptima!=null) {
 				if(siguienteNodo.getF() < metaOptima.getF()) {
 					expandirNodo(siguienteNodo);
@@ -57,15 +57,18 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 	 */
 	private void recalcularCaminoCoche(NodoBusqueda nodoMeta) {
 		coche.limpiarListaAcciones();
-		Stack<String> pilaAcciones = new Stack<String>();
+		ArrayDeque<String> pilaAcciones = new ArrayDeque<String>();
+		pilaAcciones.push(nodoMeta.getAccion());
 		NodoBusqueda nodoPadre = nodoMeta.getNodoPadre();
 		while(nodoPadre!=null) {
-			pilaAcciones.add(nodoPadre.getAccion());
+			pilaAcciones.push(nodoPadre.getAccion());
 			nodoPadre = nodoPadre.getNodoPadre();
 		}
-		Iterator<String> itr = pilaAcciones.iterator();
+		
+		Iterator<String> itr = pilaAcciones.iterator(); //Va desde cima de pila a primero insertado
 		while(itr.hasNext()) {
-			moverCoche(itr.next());
+			String a = itr.next();
+			moverCoche(a);
 		}
 	}
 	
@@ -100,8 +103,6 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 	
 	private void expandirNodo(NodoBusqueda nodoPadre) {
 		nodoPadre.expandirHijos();
-		getNodosPorExpandir().remove(nodoPadre);
-		getNodosExpandidos().add(nodoPadre);
 		Iterator<NodoBusqueda> itr = nodoPadre.iterator();
 		while(itr.hasNext()) {
 			NodoBusqueda nodoHijo = itr.next();
@@ -118,7 +119,8 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		while(itr.hasNext()) {
 			NodoBusqueda nodoHijoActual = itr.next();
 			nodoHijoActual.setG(nodoHijoActual.getNodoPadre().getG()+1);
-			nodoHijoActual.setH(distanciaEuclidea(nodoHijoActual.getCelda(), celdaMeta));
+//			nodoHijoActual.setH(distanciaEuclidea(nodoHijoActual.getCelda(), celdaMeta));
+			nodoHijoActual.setH(distanciaManhattan(nodoHijoActual.getCelda(), celdaMeta));
 			nodoHijoActual.setF(nodoHijoActual.getG()+nodoHijoActual.getH());
 		}
 	}
@@ -127,6 +129,12 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 		int distanciaFilas = Math.abs(celdaOrigen.getFila()-celdaDestino.getFila());
 		int distanciaColumnas = Math.abs(celdaOrigen.getColumna()-celdaDestino.getColumna());
 		return (int) Math.sqrt(((distanciaFilas*distanciaFilas) + (distanciaColumnas*distanciaColumnas)));
+	}
+	
+	private int distanciaManhattan(Celda celdaOrigen, Celda celdaDestino) {
+		int distanciaFilas = Math.abs(celdaOrigen.getFila())-celdaDestino.getFila();
+		int distanciaColumnas = Math.abs(celdaOrigen.getColumna()-celdaDestino.getColumna());
+		return distanciaFilas+distanciaColumnas;
 	}
 
 	public ArrayList<NodoBusqueda> getNodosExpandidos() {

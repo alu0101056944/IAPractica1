@@ -6,20 +6,22 @@ public class MatrizCeldas {
 	
 	private Celda celdaInicial, celdaMeta;
 	
-	private int numFilas, numColumnas;
-	
 	/**
 	 * Crea una matriz inicial de 5x5
 	 */
 	public MatrizCeldas(int numFilas, int numColumnas, int filaInicial, int columnaInicial,
 			int filaMeta, int columnaMeta) {
 		setMatrizCeldas(numFilas, numColumnas, filaInicial, columnaInicial, filaMeta, columnaMeta);
+		getMatrizCeldas()[1][5].setOcupada(true);
+		getMatrizCeldas()[2][5].setOcupada(true);
+		getMatrizCeldas()[3][5].setOcupada(true);
+		getMatrizCeldas()[4][5].setOcupada(true);
+		getMatrizCeldas()[5][5].setOcupada(true);
+		getMatrizCeldas()[6][5].setOcupada(true);
 	}
 	
 	public void setMatrizCeldas(int numFilas, int numColumnas, int filaInicial, int columnaInicial,
 			int filaMeta, int columnaMeta) {
-		setNumColumnas(numColumnas);
-		setNumFilas(numFilas);
 		this.matrizCeldas = new Celda[numFilas][numColumnas];
 		for(int i = 0; i < numFilas; i++) {			//inicializamos la matriz
 			for(int j = 0; j < numColumnas; j++){
@@ -36,7 +38,20 @@ public class MatrizCeldas {
 	}
 	
 	public void setMatrizCeldas(Celda[][] nuevaMatriz) {
-		this.matrizCeldas = nuevaMatriz;
+		this.matrizCeldas = new Celda[nuevaMatriz.length][nuevaMatriz[0].length];
+		for(int i = 0; i < nuevaMatriz.length; i++) {
+			for(int j = 0; j < nuevaMatriz[0].length; j++){
+				matrizCeldas[i][j] = nuevaMatriz[i][j];
+				matrizCeldas[i][j].setFila(i);
+				matrizCeldas[i][j].setColumna(j);
+				if(matrizCeldas[i][j].esInicio()) {
+					setCeldaInicial(getMatrizCeldas()[i][j]);
+				}
+				if(matrizCeldas[i][j].esMeta()) {
+					setCeldaMeta(getMatrizCeldas()[i][j]);
+				}
+			}
+		}
 		establecerVecinos();
 	}
 	
@@ -248,19 +263,7 @@ public class MatrizCeldas {
 	 * @return numFilasMatrizCeldas filas en la matriz escenario
 	 */
 	public int getNumFilas() {
-		return numFilas;
-	}
-	
-	/**
-	 * Parte de la especificacion del tamanyo del escenario. Usado
-	 * en la clase MatrizCeldas
-	 * 
-	 * @Precondition numFilas>0
-	 * @param numFilas, nuevo numero de filas
-	 */
-	public void setNumFilas(int numFilas) {
-		this.matrizCeldas = new Celda[numFilas][this.numColumnas];
-		this.numFilas = numFilas;
+		return getMatrizCeldas().length;
 	}
 
 	/**
@@ -270,18 +273,7 @@ public class MatrizCeldas {
 	 * @return numColumns Columns in the matrix of cells in the stage
 	 */
 	public int getNumColumnas() {
-		return numColumnas;
-	}
-
-	/**
-	 * Part of stage size specification. Used in cell matrix.
-	 * Should be called after instantiation.
-	 * 
-	 * @return numColumns Columns in the matrix of cells in the stage
-	 */
-	public void setNumColumnas(int numColumns) {
-		this.matrizCeldas = new Celda[this.numFilas][numColumns];
-		this.numColumnas = numColumns;
+		return getMatrizCeldas()[0].length;
 	}
 
 	public Celda getCeldaInicial() {

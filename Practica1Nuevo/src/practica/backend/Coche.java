@@ -58,20 +58,12 @@ public class Coche {
 	 */
 	public void buscarCamino(Celda celdaMeta) {
 		IAlgoritmoBusqueda busqueda = new BusquedaEstrella(this);
+		sensores.setCeldaConCoche(getCeldaConCoche());
 		busqueda.buscar(celdaMeta); //Ejecuta el algoritmo
-//		getListaAcciones().add("derecha");
-//		getListaAcciones().add("derecha");
-//		getListaAcciones().add("abajo");
-//		getListaAcciones().add("derecha");
-//		getListaAcciones().add("abajo");
-//		getListaAcciones().add("derecha");
-//		getListaAcciones().add("derecha");
-//		getListaAcciones().add("arriba");
 	}
 	
 	public void moverArriba() {
 		if(sensores.comprobarSiCeldaArribaLibre()) {
-//			System.err.print("movimiento");
 			setCeldaAnterior(getCeldaConCoche());
 			setCeldaConCoche(getCeldaConCoche().getCeldaArriba());
 			getListaAcciones().add("arriba");
@@ -80,7 +72,6 @@ public class Coche {
 	
 	public void moverAbajo() {
 		if(sensores.comprobarSiCeldaAbajoLibre()) {
-//			System.err.print("movimiento");
 			setCeldaAnterior(getCeldaConCoche());
 			setCeldaConCoche(getCeldaConCoche().getCeldaAbajo());
 			getListaAcciones().add("abajo");
@@ -89,7 +80,6 @@ public class Coche {
 	
 	public void moverDerecha() {
 		if(sensores.comprobarSiCeldaDerechaLibre()) {
-//			System.err.print("movimiento");
 			setCeldaAnterior(getCeldaConCoche());
 			setCeldaConCoche(getCeldaConCoche().getCeldaDerecha());
 			getListaAcciones().add("derecha");
@@ -98,7 +88,6 @@ public class Coche {
 	
 	public void moverIzquierda() {
 		if(sensores.comprobarSiCeldaIzquierdaLibre()) {
-//			System.err.print("movimiento");
 			setCeldaAnterior(getCeldaConCoche());
 			setCeldaConCoche(getCeldaConCoche().getCeldaIzquierda());
 			getListaAcciones().add("izquierda");

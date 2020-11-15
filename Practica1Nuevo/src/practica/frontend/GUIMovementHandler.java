@@ -20,7 +20,7 @@ public class GUIMovementHandler{
 	private int tipoMovimiento;
 	
 	private Timer t;
-	private ActionListenerPrueba ejecutor;
+	private ActionListenerMover ejecutor;
 	
 	private GUICelda celdaObjetivo;
 	
@@ -34,7 +34,7 @@ public class GUIMovementHandler{
 		this.setCoche(coche);
 		listaAcciones = new ArrayList<String>();
 		listaObjetivos = new ArrayList<GUICelda>();
-		ejecutor = new ActionListenerPrueba(panelEscenario, coche);
+		ejecutor = new ActionListenerMover(panelEscenario, coche);
 		t = new Timer(7, ejecutor);
 	}
 	
@@ -218,7 +218,7 @@ public class GUIMovementHandler{
 	}
 }
 
-class ActionListenerPrueba implements ActionListener{
+class ActionListenerMover implements ActionListener{
 
 	private GUICoche coche;
 	
@@ -232,7 +232,7 @@ class ActionListenerPrueba implements ActionListener{
 		
 	private boolean necesitaCalcularVelocidad = false;
 	
-	public ActionListenerPrueba(GUIPanelEscenario escenario, GUICoche coche) {
+	public ActionListenerMover(GUIPanelEscenario escenario, GUICoche coche) {
 		this.coche = coche;
 		this.escenario = escenario;
 		if(celdaObjetivo!=null) {
@@ -307,7 +307,8 @@ class ActionListenerPrueba implements ActionListener{
 		int distanciaTotal = (int)Math.sqrt( (distanciaHaciaXFinal*distanciaHaciaXFinal) + (distanciaHaciaYFinal*distanciaHaciaYFinal) );
 //		System.err.println("velocidad: " + (distanciaTotal));
 		Timer t = ((Timer)e.getSource());
-		t.setDelay(10/distanciaTotal);
+//		t.setDelay(1/(distanciaTotal*distanciaTotal)); demasiado lento
+		t.setDelay(0);
 	}
 	
 	private void actualizarValoresPosicion() {

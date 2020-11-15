@@ -46,10 +46,10 @@ public class GUIPanelMenu extends JPanel{
 	}
 	
 	private void parteAleatorizarObstaculos(){
-		etiquetaAleatorizarObstaculos = new JLabel("Prob. Obs.");
+		etiquetaAleatorizarObstaculos = new JLabel("% Obs.");
 		add(etiquetaAleatorizarObstaculos);
 		
-		valorAleatorizacionObstaculos = new JTextField("3");
+		valorAleatorizacionObstaculos = new JTextField("20");
 		valorAleatorizacionObstaculos.setPreferredSize(new Dimension(40, 25));
 		add(valorAleatorizacionObstaculos);
 		
@@ -138,8 +138,8 @@ class ActionAleatorizarObstaculos implements ActionListener{
 		for(int i = 0; i < celdasEscenario.length; i++) {
 			for(int j = 0; j < celdasEscenario[0].length; j++) {
 				
-				int valorAleatorio = random.nextInt(Integer.parseInt(aux));
-				if(valorAleatorio==0) {
+				int valorAleatorio = random.nextInt(100);
+				if(valorAleatorio < Integer.parseInt(aux)) {
 					celdasEscenario[i][j].setOcupada(true);
 				}else {
 					celdasEscenario[i][j].setOcupada(false);
@@ -171,12 +171,15 @@ class MouseListenerPosicion implements MouseListener{
 			if(obstaculos.isSelected()) {
 				celda.getCelda().setOcupada(!celda.getCelda().estaOcupada());
 			}else if(inicio.isSelected()) {
-				escenario.establecerCeldaInicial(celda);
-				escenario.ponerCocheEnCelda(celda.getIndiceMatrizI(), celda.getIndiceMatrizJ());
+				if(!celda.getCelda().esMeta()) {
+					escenario.establecerCeldaInicial(celda);
+					escenario.ponerCocheEnCelda(celda.getIndiceMatrizI(), celda.getIndiceMatrizJ());
+				}
 			}else if(meta.isSelected()) {
-				escenario.establecerCeldaMeta(celda);
+				if(!celda.getCelda().esInicio()) {
+					escenario.establecerCeldaMeta(celda);
+				}
 			}
-		}else {
 		}
 		escenario.repaint();
 	}
