@@ -1,0 +1,10 @@
+numFilas numColumnas | tamaño de la matriz
+200 200
+
+filaInicio columnaInicio | posicion celda inicio
+0 0
+
+filaMeta columnaMeta | posicion celda meta
+199 199
+
+filaObstaculo columnaObstaculo | posiciones de los obstaculos

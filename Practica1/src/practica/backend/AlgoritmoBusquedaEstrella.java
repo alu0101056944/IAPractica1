@@ -3,16 +3,15 @@ package practica.backend;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Stack;
 
-public class BusquedaEstrella implements IAlgoritmoBusqueda{
+public class AlgoritmoBusquedaEstrella implements IAlgoritmoBusqueda{
 	
 	private ArrayList<NodoBusqueda> nodosExpandidos;
 	private ArrayList<NodoBusqueda> nodosPorExpandir;
 	
 	private Coche coche;
 	
-	public BusquedaEstrella(Coche coche) {
+	public AlgoritmoBusquedaEstrella(Coche coche) {
 		this.setCoche(coche);
 		this.setCeldasExpandidas(new ArrayList<NodoBusqueda>());
 		this.setCeldasPorExpandir(new ArrayList<NodoBusqueda>());
@@ -30,6 +29,7 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
 			if(siguienteNodo.esMeta() && (siguienteNodo.mejorMetaQue(metaOptima) || metaOptima==null)){
 				metaOptima = siguienteNodo;
 				recalcularCaminoCoche(siguienteNodo);
+				
 			}
 			
 			getNodosPorExpandir().remove(siguienteNodo);
@@ -80,7 +80,12 @@ public class BusquedaEstrella implements IAlgoritmoBusqueda{
                     NodoBusqueda temp = getNodosPorExpandir().get(j); 
                     getNodosPorExpandir().set(j, getNodosPorExpandir().get(j+1));
                     getNodosPorExpandir().set(j+1, temp); 
-                } 
+                }else if(getNodosPorExpandir().get(j).getF() == getNodosPorExpandir().get(j+1).getF() &&
+                		getNodosPorExpandir().get(j).getH() > getNodosPorExpandir().get(j+1).getH()) {
+                	NodoBusqueda temp = getNodosPorExpandir().get(j); 
+                    getNodosPorExpandir().set(j, getNodosPorExpandir().get(j+1));
+                    getNodosPorExpandir().set(j+1, temp); 
+                }
             }
         }
 	}
