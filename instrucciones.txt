@@ -1,1 +1,0 @@
-Abrir práctica1_marcos_barrios_lorenzo.jar, es un ejecutable. se abrirá la interfaz gráfica.
